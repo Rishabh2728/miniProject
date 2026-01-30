@@ -26,6 +26,37 @@ fetch('https://dummyjson.com/products')
 /////////////////////////////////////////////////////////////Search feature//////////////////////////////////////////
 const btn = document.getElementById('btn');
 const searchInput = document.getElementById('searchInput');
+const suggestionBox = document.getElementById("suggestion");
+
+searchInput.addEventListener("input", () =>{
+  console.log("Suggestion working");
+
+  const text = searchInput.value.toLowerCase();
+  const history = JSON.parse(localStorage.getItem("searchHistory")) || [];
+  console.log("History: ",history);
+
+  const matches = history.filter(item =>
+    item.query.toLowerCase().includes(text)
+  );
+
+  suggestionBox.innerHTML = "";
+  matches.forEach(item =>{
+    const div = document.getElementById("div");
+    div.className = "suggestion-item";
+    div.innerHTML = "";
+
+    div.addEventListener("click",() =>{
+      searchInput.value = item.query;
+      suggestionBox.innerHTML = "";
+    });
+
+    suggestionBox.appendChild(div);
+
+  });
+
+  
+
+});
 
 btn.addEventListener('click', () => {
 
