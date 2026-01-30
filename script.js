@@ -20,14 +20,31 @@ fetch('https://dummyjson.com/products')
   })
   .catch(err => console.log(err));
 
+  
+
+
 /////////////////////////////////////////////////////////////Search feature//////////////////////////////////////////
 const btn = document.getElementById('btn');
 const searchInput = document.getElementById('searchInput');
 
 btn.addEventListener('click', () => {
+
   const query = searchInput.value.trim();
   if (!query) return;
 
+  //save to localstorage
+
+  let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+  if (!history.includes(query)) {
+    history.push({
+      query: query,
+      time: Date.now()
+    });
+  localStorage.setItem("searchHistory", JSON.stringify(history));
+  console.log("his",history);
+
+  }
   //redirect with query params
   window.location.href = `search.html?q=${encodeURIComponent(query)}`;
   searchInput.value = '';
